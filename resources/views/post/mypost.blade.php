@@ -5,14 +5,17 @@
         </h2>
         <x-validation-errors class="mb-4" :errors="$errors" />
 
-         <x-message :message="session('message')" />
-
+        <x-message :message="session('message')" />
     </x-slot>
 
     {{-- 投稿一覧表示用のコード --}}
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
+        @if (count($posts) == 0)
+        <p class="mt-4">
+        あなたはまだ投稿していません。
+        </p>
+        @else
         @foreach ($posts as $post)
         <div class="mx-4 sm:p-8">
             <div class="mt-4">
@@ -43,5 +46,6 @@
             </div>
         </div>
         @endforeach
+        @endif
     </div>
 </x-app-layout>

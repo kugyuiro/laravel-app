@@ -1,19 +1,24 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            投稿の一覧
+            コメントした投稿の一覧
         </h2>
         <x-validation-errors class="mb-4" :errors="$errors" />
-
-         <x-message :message="session('message')" />
+        <x-message :message="session('message')" />
 
     </x-slot>
 
-    {{-- 投稿一覧表示用のコード --}}
-
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        @foreach ($posts as $post)
+        @if (count($comments) == 0)
+        <p class="mt-4">
+        あなたはまだコメントしていません。
+        </p>
+        @else
+        @foreach ($comments->unique('post_id') as $comment)
+        @php
+            //コメントした投稿
+            $post = $comment->post;
+        @endphp
         <div class="mx-4 sm:p-8">
             <div class="mt-4">
 
@@ -26,7 +31,6 @@
                         <div class="text-sm font-semibold flex flex-row-reverse">
                             <p> {{ $post->user->name }} • {{$post->created_at->diffForHumans()}}</p>
                         </div>
-                        {{-- 追加部分 --}}
                         <hr class="w-full mb-2">
                         @if ($post->comments->count())
                         <span class="badge">
@@ -43,5 +47,7 @@
             </div>
         </div>
         @endforeach
+        @endif
     </div>
 </x-app-layout>
+
